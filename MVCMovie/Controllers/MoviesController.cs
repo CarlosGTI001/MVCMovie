@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using MVCMovie.Data;
-using MVCMovie.Models;
+    using MVCMovie.Models;
 
 namespace MVCMovie.Controllers
 {
@@ -39,12 +39,16 @@ namespace MVCMovie.Controllers
             {
                 movies = movies.Where(x => x.Genre == movieGenre);
             }
-
-            var movieGenreVM = new MovieGenreViewModel
+            var movieGenreVM = new MovieGenreViewModel();
+            if (movieGenreVM != null)
             {
-                Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
-                Movies = await movies.ToListAsync()
-            };
+                movieGenreVM = new MovieGenreViewModel
+                {
+                    Genres = new SelectList(await genreQuery.Distinct().ToListAsync()),
+                    Movies = await movies.ToListAsync()
+                };
+            }
+            
 
             return View(movieGenreVM);
         }
